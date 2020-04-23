@@ -23,13 +23,17 @@ const todos = [
 
 const filters = {
 	searchText: '',
+	hideCompleted: false,
 };
 
 const renderTodos = function (todos, filters) {
 	const filteredTodos = todos.filter(function (todo) {
-		return todo.text
+		const searchTextMatch = todo.text
 			.toLowerCase()
 			.includes(filters.searchText.toLowerCase());
+		const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
+
+		return searchTextMatch && hideCompletedMatch;
 	});
 
 	document.querySelector('#todos').innerHTML = '';
@@ -56,15 +60,10 @@ document.querySelector('#search-text').addEventListener('input', function (e) {
 	renderTodos(todos, filters);
 });
 
-document.querySelector('#new-todo').addEventListener('submit', function (e) {
-	e.preventDefault();
+document
+	.querySelector('#hide-completed')
+	.addEventListener('change', function (e) {
+		filters.hideCompleted = e.target.checked;
 
-	todos.push({
-		text: e.target.elements.text.value,
-		completed: false,
+		renderTodos(todos, filters);
 	});
-
-	renderTodos(todos, filters);
-
-	e.target.elements.text.value = '';
-});

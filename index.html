@@ -9,14 +9,12 @@
 
 	<body>
 		<h1>Todos</h1>
-		<input
-			type="text"
-			id="new-todo-text"
-			placeholder="Enter new thing to do..."
-		/>
-		<button id="add-todo">Add Todo</button>
-		<input type="text" id="search-text" placeholder="Filter todos..." />
+		<input type="text" id="search-text" placeholder="Filter" />
 		<div id="todos"></div>
+		<form id="new-todo">
+			<input type="text" name="text" placeholder="A new todo.." />
+			<button>Add Todo</button>
+		</form>
 
 		<script src="notes-app.js"></script>
 	</body>

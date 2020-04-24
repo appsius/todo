@@ -14,6 +14,28 @@ const saveTodos = function (todos) {
 	localStorage.setItem('todos', JSON.stringify(todos));
 };
 
+// Remove a todo from the list
+const removeTodo = function (id) {
+	const todoIndex = todos.findIndex(function (todo) {
+		return todo.id === id;
+	});
+
+	if (todoIndex > -1) {
+		todos.splice(todoIndex, 1);
+	}
+};
+
+// Toggle the complete value for a given todo
+const toggleTodo = function (id) {
+	const todo = todos.find(function (todo) {
+		return todo.id === id;
+	});
+
+	if (todo !== undefined) {
+		todo.completed = !todo.completed;
+	}
+};
+
 // Render application todos
 const renderTodos = function (todos, filters) {
 	const filteredTodos = todos.filter(function (todo) {
@@ -39,17 +61,6 @@ const renderTodos = function (todos, filters) {
 	});
 };
 
-// Remove a todo from the list
-const removeTodo = function (id) {
-	const todoIndex = todos.findIndex(function (todo) {
-		return todo.id === id;
-	});
-
-	if (todoIndex > -1) {
-		todos.splice(todoIndex, 1);
-	}
-};
-
 // Generate DOM structure for a todo
 const generateTodoDOM = function (todo) {
 	const todoEl = document.createElement('div');
@@ -59,7 +70,13 @@ const generateTodoDOM = function (todo) {
 
 	// Set checkbox
 	checkbox.setAttribute('type', 'checkbox');
+	checkbox.checked = todo.completed;
 	todoEl.appendChild(checkbox);
+	checkbox.addEventListener('change', function () {
+		toggleTodo(todo.id);
+		saveTodos(todos);
+		renderTodos(todos, filters);
+	});
 
 	// Set text content
 	todoText.textContent = todo.text;
